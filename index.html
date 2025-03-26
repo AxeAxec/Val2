@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Love</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Great+Vibes&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe6e6;
+            color: #d63384;
+            margin: 0;
+            padding: 0;
+            overflow-y: auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            background-color: #ff4d6d;
+            color: white;
+            padding: 20px;
+            font-size: 28px;
+            font-family: 'Great Vibes', cursive;
+            position: relative;
+        }
+
+        .download-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .download-btn:hover {
+            background-color: #d63384;
+        }
+
+        .quote {
+            font-size: 20px;
+            font-style: italic;
+            margin: 20px auto;
+        }
+
+        nav {
+            margin: 20px 0;
+            font-size: 22px;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #d63384;
+            padding: 10px 15px;
+            border-radius: 10px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background-color: #ffb3c1;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            flex-grow: 1;
+        }
+
+        .slideshow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .slideshow img {
+            max-width: 100%;
+            max-height: 60vh;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slideshow img.active {
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #ffb3c1;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .exit-btn {
+            margin-top: 15px;
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .exit-btn:hover {
+            background-color: #d63384;
+        }
+
+        footer {
+            padding: 10px;
+            background-color: #ff4d6d;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .petal {
+            position: fixed;
+            top: -10px;
+            width: 25px;
+            height: 25px;
+            background-color: pink;
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: inset -2px -2px 5px rgba(255, 20, 147, 0.4);
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Special Message Styling */
+        .special-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 24px;
+            color: #d63384;
+            background-color: #ffe6e6;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in-out;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translate(-50%, -60%); }
+            100% { opacity: 1; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        FOR LOVE
+        <button class="download-btn" onclick="showDownloadModal()">Download Website</button>
+    </header>
+    <div class="quote">"You are my today and all of my tomorrows."</div>
+    
+    <nav>
+        <a href="#" onclick="showModal('letter-modal')">📜💌 The Letter</a> |
+        <a href="#" onclick="showModal('poem-modal')">📖❤️ Poem for You</a> |
+        <a href="#" onclick="showSpecialMessage()">🎥💖 A Video</a>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome to my website for you.</h2>
+        <p>Here I compiled my favorite pictures of you, letters, and our song that fit us.</p>
+        <div class="slideshow">
+            <img src="special.png" alt="Your Special Image" class="active">
+            <img src="special2.png" alt="Your Special Image 2">
+            <img src="special3.png" alt="Your Special Image 3">
+            <img src="tulips.webp" alt="Your Special Image 4">
+        </div>
+    </div>
+
+    <!-- Letter Modal -->
+    <div id="letter-modal" class="modal">
+        <div class="modal-content">
+            <h3>My Love Letter</h3>
+            <p>Dear love,</p>
+            <p>You are the most beautiful part of my life. Every moment with you is a treasure...</p>
+            <p>
+                I really love you, Love. I wanna meet you in person and bring you sa altar which we will make vow to each other, but know this from the moment I fell in love with you I make a vow to you, to me, and to God...that this woman, I will never do anything to hurt her and I will protect her from the harm of this world. No one can replace you, wala makakapantay kung gaano ka loving, caring, and how much beautiful inside of your heart, and that's you Love. I am willing take a risk kasi ikaw yan, dahil answered prayer kita kay Lord and you're my blessing na proud na proud ako sabihin na itong babaeng na'to this will be my wife and partner gaano man kahirap ang buhay. I think how we are treating each other is very unique at hindi basta-basta eto matatagpuan dahil napaka genuine natin sa isa't isa. I will promise you the day na settled na tayo and stable na income natin I'm gonna propose to you and I hope mag say 'yes' ka. I will love you till my last breath, Pearl.
+                <br><br>
+                Now, love I am sorry that I am such a burden to you especially sa buhay mo and sa school. Hindi ko gusto and sinasadya na ma-drain ka sa akin sa pagtatanong ko na "Pagod ka na ba sa akin?" I never meant na-madrain ka. I just need reassurance if ever nagtatanong ako ng ganyan and I'm just making sure na okay ang lahat but ang outcome is exactly opposite, if ever man na feel ko need ko na reassurance, I'm just gonna figure it out nalang. I just want you to be best version of yourself with me...together. Alam ko love na sobrang kulit ko and patawarin mo ko for that na super needy and clingy ako. Patawarin mo ako ha, alam ko kaya nasabi mga yon and minura mo relasyon natin kasi sobrang kulit ko that time and ikaw ay na ddrain. I'll be better from now on I promise para hindi ka na magkaganyan.
+                <br><br>
+                Lastly, Love I will accept and love you at your worst and at your best, at your lows and highs. My decision is already made that I will gonna marry you and I promise you I'm gonna be best for you, kahit hindi ka na kamahal-mahal ay mamahalin parin kita dahil ikaw yan and pinipili kita PALAGI. I LOVE YOU
+            </p>
+            <p>Forever yours, Jeremiah.</p>
+            <button class="exit-btn" onclick="hideModal('letter-modal')">Exit, Love Love ❤️</button>
+        </div>
+    </div>
+
+    <!-- Poem Modal -->
+    <div id="poem-modal" class="modal">
+        <div class="modal-content">
+            <h3>Poem for You ❤️</h3>
+            <p style="text-align: left; white-space: pre-line;">
+Love, malayo man tayo ngayon,
+Sa bawat litrato mo, nandyan ka pa rin sa puso ko.
+Ang boses mo, parang awiting ayaw tumigil,
+Nagpapagaan ng loob ko, nagbibigay ng ginhawa’t init.
+
+Kahit ‘di pa kita nahahawakan,
+Kahit ‘di pa kita nasasabihan nang harapan,
+Alam kong ikaw lang ang para sa akin,
+Sa bawat tawag, ramdam ko’y ikaw ang tunay kong hinihiling.
+
+Ang ganda ng boses mo, parang musika sa tenga,
+Nagpapaligaya, nagpapalambot ng problema.
+At sa mga litrato mo, ramdam ko ang ngiti mo,
+Parang nandyan ka lang, kahit malayo tayo.
+
+Love, alam kong mahirap ang long distance,
+Pero para sa’yo, kakayanin ko lahat ng pagsubok na ‘to.
+Kasi ikaw ang mundo ko, kahit saan man tayo dalhin,
+Ikaw lang ang gusto ko, ikaw lang ang pipiliin.
+
+Hintayin mo ako, love, darating din ang araw,
+Makikita kita nang harapan, masasabi ko lahat ng nararamdaman.
+Pero sa ngayon, sa boses at litrato mo muna ako kumakapit,
+Ikaw lang ang mahalaga, ikaw lang ang sapat sa akin.
+            </p>
+            <button class="exit-btn" onclick="hideModal('poem-modal')">Exit, Love Love ❤️</button>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <h3>Download Website</h3>
+            <p>
+                I might not be here forever when I die or left me. But know this, this website will be forever yours if you download and click it.
+            </p>
+            <button class="exit-btn" onclick="downloadWebsite()">Download</button>
+            <button class="exit-btn" onclick="hideModal('download-modal')">Exit, Love Love ❤️</button>
+        </div>
+    </div>
+
+    <footer>
+        Made with ❤️ by your Latino Jeremiah.
+        <br>
+        March 21, 2025
+    </footer>
+
+    <!-- Default Background Music -->
+    <audio id="default-music" loop>
+        <source src="BawatSandali-AmielSol.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Include JSZip library -->
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script>
+        // Default background music
+        let defaultMusic = document.getElementById("default-music");
+        let musicPlayer = document.querySelector("#music-modal audio");
+        let videoPlayer = document.querySelector("#video-modal video");
+
+        function playDefaultMusic() {
+            defaultMusic.play().catch(error => console.log("Autoplay blocked, waiting for user interaction..."));
+        }
+
+        document.addEventListener("DOMContentLoaded", playDefaultMusic);
+
+        document.addEventListener("click", function() {
+            if (defaultMusic.paused) {
+                playDefaultMusic();
+            }
+        }, { once: true });
+
+        // Function to show the download modal
+        function showDownloadModal() {
+            document.getElementById('download-modal').style.display = 'flex';
+        }
+
+        // Function to hide the download modal
+        function hideModal(id) {
+            document.getElementById(id).style.display = 'none';
+            if (musicPlayer.paused && videoPlayer.paused) {
+                defaultMusic.play();
+            }
+        }
+
+        if (musicPlayer) {
+            musicPlayer.addEventListener("play", function () {
+                defaultMusic.pause();
+            });
+        }
+
+        if (videoPlayer) {
+            videoPlayer.addEventListener("play", function () {
+                defaultMusic.pause();
+            });
+        }
+
+        // Petals Animation
+        function createPetal() {
+            const petal = document.createElement("div");
+            petal.classList.add("petal");
+            petal.style.left = Math.random() * window.innerWidth + "px";
+            petal.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            petal.style.animationDelay = Math.random() * 5 + "s";
+            document.body.appendChild(petal);
+            setTimeout(() => { petal.remove(); }, 5000);
+        }
+
+        setInterval(createPetal, 300);
+
+        // Slideshow Logic
+        const slideshowImages = document.querySelectorAll(".slideshow img");
+        let currentImageIndex = 0;
+
+        function showNextImage() {
+            // Hide the current image
+            slideshowImages[currentImageIndex].classList.remove("active");
+
+            // Move to the next image
+            currentImageIndex = (currentImageIndex + 1) % slideshowImages.length;
+
+            // Show the next image
+            slideshowImages[currentImageIndex].classList.add("active");
+        }
+
+        // Start the slideshow
+        setInterval(showNextImage, 3000); // Change image every 3 seconds
+
+        // Function to download the website as a .zip file
+        async function downloadWebsite() {
+            const zip = new JSZip();
+
+            // Add the HTML file to the zip
+            const htmlContent = document.documentElement.outerHTML;
+            zip.file("index.html", htmlContent);
+
+            // Add images to the zip
+            const imageFiles = ["special.png", "special2.png", "special3.png"];
+            for (const file of imageFiles) {
+                try {
+                    const response = await fetch(file);
+                    if (!response.ok) throw new Error(`Failed to fetch ${file}: ${response.statusText}`);
+                    const blob = await response.blob();
+                    zip.file(file, blob);
+                } catch (error) {
+                    console.error(`Error fetching ${file}:`, error);
+                    alert(`Failed to fetch ${file}. Please ensure the file exists and is accessible.`);
+                    return; // Stop the download process if any file fails
+                }
+            }
+
+            // Add audio file to the zip
+            const audioFile = "BawatSandali-AmielSol.mp3";
+            try {
+                const audioResponse = await fetch(audioFile);
+                if (!audioResponse.ok) throw new Error(`Failed to fetch ${audioFile}: ${audioResponse.statusText}`);
+                const audioBlob = await audioResponse.blob();
+                zip.file(audioFile, audioBlob);
+            } catch (error) {
+                console.error(`Error fetching ${audioFile}:`, error);
+                alert(`Failed to fetch ${audioFile}. Please ensure the file exists and is accessible.`);
+                return; // Stop the download process if any file fails
+            }
+
+            // Add video file to the zip
+            const videoFile = "your-video.mp4";
+            try {
+                const videoResponse = await fetch(videoFile);
+                if (!videoResponse.ok) throw new Error(`Failed to fetch ${videoFile}: ${videoResponse.statusText}`);
+                const videoBlob = await videoResponse.blob();
+                zip.file(videoFile, videoBlob);
+            } catch (error) {
+                console.error(`Error fetching ${videoFile}:`, error);
+                alert(`Failed to fetch ${videoFile}. Please ensure the file exists and is accessible.`);
+                return; // Stop the download process if any file fails
+            }
+
+            // Generate the zip file
+            const zipBlob = await zip.generateAsync({ type: "blob" });
+
+            // Create a download link for the zip file
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(zipBlob);
+            a.download = "For_Love_Website.zip";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+
+            // Hide the download modal
+            hideModal('download-modal');
+        }
+
+        // Function to show modals
+        function showModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        // Function to show the special message
+        function showSpecialMessage() {
+            const message = document.createElement("div");
+            message.classList.add("special-message");
+            message.innerHTML = `
+                <p>That's another surprise for next time, stay in love with me mi amor. I love you! ❤️</p>
+            `;
+            document.body.appendChild(message);
+
+            // Remove the message after 5 seconds
+            setTimeout(() => {
+                message.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
